@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cybersecurity: Staying Safe in the Digital World</title>
+<style>
+/* ===== DESIGN TOKENS ===== */
+:root{
+  --brand:#c2cfea; --navy:#23395B; --white:#fff; --pale:#F3F6FC; --accent:#6B8FCB;
+  --good:#2bb8a3; --good-bg:#dff6f2; --bad:#f0735f; --bad-bg:#fde8e4;
+  --font:"Trebuchet MS","Segoe UI",Verdana,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{
+  font-family:var(--font);color:var(--navy);overflow:hidden;
+  background:linear-gradient(135deg,var(--pale) 0%,var(--brand) 100%);
+  font-size:clamp(16px,1.25vw,24px);
+}
+/* ===== BACKGROUND SHAPES ===== */
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bg i{position:absolute;border-radius:50%;background:var(--brand);opacity:.55;animation:float 14s ease-in-out infinite}
+.bg i:nth-child(1){width:34vw;height:34vw;left:-9vw;top:-10vw}
+.bg i:nth-child(2){width:22vw;height:22vw;right:-5vw;bottom:-6vw;background:var(--accent);opacity:.22;animation-delay:-4s}
+.bg i:nth-child(3){width:9vw;height:9vw;right:14vw;top:8vh;border-radius:28%;background:#fff;opacity:.6;animation-delay:-8s}
+.bg i:nth-child(4){width:6vw;height:6vw;left:12vw;bottom:10vh;border-radius:28%;background:var(--accent);opacity:.25;animation-delay:-2s}
+@keyframes float{50%{transform:translateY(-3vh) rotate(8deg)}}
+
+/* ===== SCREENS ===== */
+.screen{position:fixed;inset:0;z-index:1;display:none;align-items:center;justify-content:center;padding:3vh 4vw}
+.screen.active{display:flex;animation:in .5s ease}
+@keyframes in{from{opacity:0;transform:scale(.97)}}
+.card{background:var(--white);border-radius:2.2em;box-shadow:0 .5em 0 var(--brand),0 2em 4em rgba(35,57,91,.16);padding:2.2em 2.8em}
+.btn{
+  font:inherit;font-weight:800;font-size:1.3em;letter-spacing:.04em;cursor:pointer;border:0;
+  color:var(--white);background:var(--navy);padding:.8em 2.2em;border-radius:99em;
+  box-shadow:0 .3em 0 #15243d;transition:transform .15s,box-shadow .15s;
+}
+.btn:hover{transform:translateY(-.1em)}
+.btn:active{transform:translateY(.25em);box-shadow:0 .05em 0 #15243d}
+.btn:focus-visible,.opt:focus-visible{outline:.2em solid var(--accent);outline-offset:.2em}
+
+/* ===== INTRO ===== */
+#intro{text-align:center}
+#intro .wrap{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center;max-width:78em;width:100%}
+#intro .left{text-align:left}
+h1{font-size:3.6em;line-height:1.02;font-weight:900;letter-spacing:-.02em}
+.sub{font-size:1.6em;font-weight:700;color:var(--accent);margin:.5em 0}
+.lead{font-size:1.15em;line-height:1.5;margin-bottom:1.6em;max-width:28em}
+.shield{width:100%;max-width:26em;margin:auto;animation:float 7s ease-in-out infinite}
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 .3em 0 #15243d,0 0 0 0 rgba(107,143,203,.7)}70%{box-shadow:0 .3em 0 #15243d,0 0 0 1.2em rgba(107,143,203,0)}100%{box-shadow:0 .3em 0 #15243d,0 0 0 0 rgba(107,143,203,0)}}
+
+/* ===== COUNTDOWN ===== */
+#count .n{font-size:16em;font-weight:900;color:var(--navy);animation:pop 1s ease infinite}
+@keyframes pop{0%{transform:scale(.4);opacity:0}30%{transform:scale(1.1);opacity:1}100%{transform:scale(1);opacity:.9}}
+
+/* ===== QUIZ ===== */
+#quiz{flex-direction:column;gap:2vh}
+.top{display:flex;align-items:center;gap:2em;width:100%;max-width:80em}
+.chip{background:var(--white);border-radius:99em;padding:.5em 1.2em;font-weight:800;font-size:1.1em;box-shadow:0 .2em 0 var(--brand);white-space:nowrap}
+.bar{flex:1;height:1.1em;background:var(--white);border-radius:99em;overflow:hidden;box-shadow:inset 0 0 0 .15em var(--brand)}
+.bar b{display:block;height:100%;width:0;border-radius:99em;background:linear-gradient(90deg,var(--accent),var(--good));transition:width .6s cubic-bezier(.3,1.2,.5,1)}
+.timer{position:relative;width:3.6em;height:3.6em}
+.timer svg{width:100%;height:100%;transform:rotate(-90deg)}
+.timer circle{fill:var(--white);stroke-width:7}
+.timer .tr{stroke:var(--brand)}
+.timer .tp{stroke:var(--accent);fill:none;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .3s}
+.timer.low .tp{stroke:var(--bad)}.timer.low span{color:var(--bad)}
+.timer span{position:absolute;inset:0;display:grid;place-items:center;font-weight:900;font-size:1.5em}
+.qcard{width:100%;max-width:80em;background:var(--white);border-radius:2.2em;padding:1.6em 2.2em;box-shadow:0 .5em 0 var(--brand),0 2em 4em rgba(35,57,91,.16);position:relative;overflow:hidden}
+.qcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:.8em;background:var(--brand)}
+.qnum{display:inline-block;background:var(--brand);border-radius:.8em;padding:.2em .8em;font-weight:900;font-size:1.3em;margin-bottom:.4em}
+.qtext{font-size:2em;font-weight:800;line-height:1.25}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:1.1em;width:100%;max-width:80em}
+.opt{
+  font:inherit;text-align:left;cursor:pointer;display:flex;align-items:center;gap:.9em;
+  background:var(--white);color:var(--navy);border:.2em solid var(--brand);border-radius:1.4em;
+  padding:.9em 1.2em;font-size:1.3em;font-weight:700;line-height:1.25;
+  box-shadow:0 .25em 0 var(--brand);transition:transform .15s,background .2s,border-color .2s;
+}
+.opt:hover:not(:disabled){transform:translateY(-.15em);background:var(--pale);border-color:var(--accent)}
+.opt .k{flex:none;width:2em;height:2em;border-radius:.6em;background:var(--brand);display:grid;place-items:center;font-weight:900}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--good-bg);border-color:var(--good);animation:bounce .5s}
+.opt.right .k{background:var(--good);color:#fff}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad);animation:shake .45s}
+.opt.wrong .k{background:var(--bad);color:#fff}
+.opt.dim{opacity:.55}
+@keyframes bounce{40%{transform:scale(1.04)}}
+@keyframes shake{25%{transform:translateX(-.4em)}75%{transform:translateX(.4em)}}
+.foot{display:flex;align-items:center;gap:1.5em;width:100%;max-width:80em;min-height:5.2em}
+.expl{flex:1;border-radius:1.2em;padding:.8em 1.2em;font-size:1.1em;font-weight:600;line-height:1.35;display:none}
+.expl.show{display:block;animation:in .4s}
+.expl.good{background:var(--good-bg);border:.15em solid var(--good)}
+.expl.bad{background:var(--bad-bg);border:.15em solid var(--bad)}
+#next{display:none}#next.show{display:block;animation:in .4s}
+
+/* ===== RESULTS ===== */
+#result .wrap{display:grid;grid-template-columns:auto 1fr;gap:3em;align-items:center;max-width:76em}
+.ring{position:relative;width:15em;height:15em}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:14;stroke-linecap:round}
+.ring .tr{stroke:var(--brand)}
+.ring .pr{stroke:var(--accent);transition:stroke-dashoffset 1.6s cubic-bezier(.3,.8,.3,1)}
+.ring div{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring b{font-size:4.2em;line-height:1;font-weight:900}
+.ring small{font-size:1.2em;font-weight:700}
+.pct{font-size:1.4em;font-weight:800;color:var(--accent)}
+#result h2{font-size:2.6em;line-height:1.1;margin:.2em 0 .3em}
+.badge{display:inline-flex;align-items:center;gap:.7em;background:var(--brand);border-radius:99em;padding:.5em 1.3em .5em .6em;font-weight:800;font-size:1.3em;margin-bottom:1.3em}
+.badge svg{width:2em;height:2em}
+#result p{font-size:1.2em;line-height:1.45;margin-bottom:1.4em}
+canvas{position:fixed;inset:0;z-index:5;pointer-events:none}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:800px){
+  body{overflow:auto}
+  .screen{position:absolute;min-height:100%}
+  #intro .wrap,#result .wrap{grid-template-columns:1fr;text-align:center}
+  #intro .left{text-align:center}.lead{margin-inline:auto}
+  h1{font-size:2.4em}.opts{grid-template-columns:1fr}.qtext{font-size:1.5em}
+  .foot{flex-direction:column}.ring{margin:auto}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg"><i></i><i></i><i></i><i></i></div>
+
+<!-- ===== INTRO ===== -->
+<section class="screen active" id="intro">
+  <div class="wrap">
+    <div class="left">
+      <h1>CYBERSECURITY QUIZ</h1>
+      <p class="sub">Think Fast. Stay Safe. Beat the Hackers!</p>
+      <p class="lead">Ten questions, twenty seconds each. Call out your answer as a class, then see who spots the scam first.</p>
+      <button class="btn pulse" id="start">START QUIZ</button>
+    </div>
+    <!-- Shield illustration with lock, wifi and fingerprint -->
+    <svg class="shield" viewBox="0 0 300 340" aria-hidden="true">
+      <path d="M150 12 266 56v92c0 80-52 138-116 172C86 286 34 228 34 148V56z" fill="#c2cfea" stroke="#23395B" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M150 38 242 72v76c0 64-40 112-92 142-52-30-92-78-92-142V72z" fill="#fff"/>
+      <rect x="108" y="140" width="84" height="66" rx="14" fill="#23395B"/>
+      <path d="M124 140v-20a26 26 0 0 1 52 0v20" fill="none" stroke="#23395B" stroke-width="12" stroke-linecap="round"/>
+      <circle cx="150" cy="169" r="9" fill="#c2cfea"/><rect x="146" y="173" width="8" height="18" rx="4" fill="#c2cfea"/>
+      <g fill="none" stroke="#6B8FCB" stroke-width="8" stroke-linecap="round"><path d="M104 96a64 64 0 0 1 92 0"/><path d="M122 80a38 38 0 0 1 56 0"/></g>
+      <circle cx="150" cy="70" r="6" fill="#6B8FCB"/>
+      <g fill="none" stroke="#6B8FCB" stroke-width="5" stroke-linecap="round" opacity=".7"><path d="M92 236c14 10 34 10 48 0M164 236c14 10 34 10 48 0"/></g>
+      <circle cx="250" cy="300" r="26" fill="#2bb8a3"/><path d="m238 300 9 9 17-19" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== COUNTDOWN ===== -->
+<section class="screen" id="count"><div class="n" id="cn">3</div></section>
+
+<!-- ===== QUESTION ===== -->
+<section class="screen" id="quiz">
+  <div class="top">
+    <div class="chip" id="qcount">Question 1 of 10</div>
+    <div class="bar"><b id="bar"></b></div>
+    <div class="chip" id="score">Score: 0</div>
+    <div class="timer" id="timer">
+      <svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="42"/><circle class="tp" id="tp" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/></svg>
+      <span id="tsec">20</span>
+    </div>
+  </div>
+  <div class="qcard"><div class="qnum" id="qnum">Q1</div><div class="qtext" id="qtext"></div></div>
+  <div class="opts" id="opts"></div>
+  <div class="foot"><div class="expl" id="expl"></div><button class="btn" id="next">NEXT QUESTION</button></div>
+</section>
+
+<!-- ===== RESULTS ===== -->
+<section class="screen" id="result">
+  <div class="card wrap">
+    <div class="ring">
+      <svg viewBox="0 0 120 120"><circle class="tr" cx="60" cy="60" r="52"/><circle class="pr" id="pr" cx="60" cy="60" r="52" stroke-dasharray="327" stroke-dashoffset="327"/></svg>
+      <div><b id="fs">0</b><small id="ft">out of 10</small></div>
+    </div>
+    <div>
+      <div class="pct" id="fp"></div>
+      <h2 id="fh"></h2>
+      <div class="badge"><svg viewBox="0 0 40 40"><path d="M20 3 34 8v11c0 9-6 15-14 18C12 34 6 28 6 19V8z" fill="#23395B"/><path id="bi" d="m13 20 5 5 9-10" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="fb"></span></div>
+      <p id="fm"></p>
+      <button class="btn" id="again">PLAY AGAIN</button>
+    </div>
+  </div>
+</section>
+<canvas id="confetti"></canvas>
+
+<script>
+/* ===== QUESTION BANK (answer = index of correct option) ===== */
+const BANK=[
+ {q:"Which password is the strongest?",o:["Password123","Fluffy2010","correct-horse-battery-staple-92","qwerty!"],a:2,e:"Long passphrases are hard to guess and easy to remember. Length beats cleverness."},
+ {q:"You get an email saying \"Your account will be closed in 1 hour! Click here.\" What is it most likely?",o:["A helpful reminder","A phishing attempt","A system update","A prize notification"],a:1,e:"Fake urgency is a classic phishing trick. Go to the official site yourself instead of clicking."},
+ {q:"What does two-factor authentication (2FA) add?",o:["A second way to prove it's you","A faster login","A bigger password","A free antivirus"],a:0,e:"2FA needs something you know plus something you have, so a stolen password alone is not enough."},
+ {q:"Is it safe to do online banking on free public Wi-Fi?",o:["Yes, if the network has a name","Yes, if it's a café network","No, use mobile data or a VPN","Yes, if you use incognito mode"],a:2,e:"Public networks can be watched or faked. Incognito mode does not hide your traffic."},
+ {q:"What is ransomware?",o:["A tool that speeds up your PC","Malware that locks your files until you pay","A type of firewall","A password manager"],a:1,e:"Ransomware encrypts your data and demands payment. Offline backups are your best defence."},
+ {q:"Why should you install software updates quickly?",o:["They change the colour theme","They fix security holes attackers exploit","They delete old files","They make Wi-Fi faster"],a:1,e:"Updates patch known vulnerabilities. Unpatched devices are easy targets."},
+ {q:"A stranger texts a link saying you won a free phone. What should you do?",o:["Click fast before it expires","Forward it to friends","Ignore and delete it","Reply with your address"],a:2,e:"Unexpected prize links are scams. Ignore, delete, and report them."},
+ {q:"What does the padlock in a browser's address bar tell you?",o:["The site is 100% trustworthy","The connection is encrypted","The site has no ads","The site is government-run"],a:1,e:"The padlock means HTTPS encryption only. Scam sites can have one too."},
+ {q:"The best way to manage many different passwords is to…",o:["Reuse one strong password everywhere","Write them on a sticky note","Use a trusted password manager","Share them with a friend"],a:2,e:"A password manager creates and stores unique passwords so one leak cannot unlock everything."},
+ {q:"You find a USB stick in the parking lot. What should you do?",o:["Plug it in to find the owner","Hand it to IT or security without plugging it in","Take it home to test","Format it and keep it"],a:1,e:"Dropped USB sticks are a known attack method. Never plug in unknown devices."}
+];
+const TIME=20, TOTAL=BANK.length;
+const $=id=>document.getElementById(id);
+let order,idx,score,left,tick,locked;
+
+/* ===== SCREEN SWITCHING ===== */
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id))}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ===== START: 3-2-1 COUNTDOWN ===== */
+function begin(){
+  clearConfetti();
+  order=shuffle(BANK);idx=0;score=0;
+  show('count');let n=3;$('cn').textContent=n;
+  const t=setInterval(()=>{n--;if(n>0){const el=$('cn');el.textContent=n;el.style.animation='none';el.offsetHeight;el.style.animation=''}else{clearInterval(t);show('quiz');loadQ()}},1000);
+}
+
+/* ===== LOAD QUESTION ===== */
+function loadQ(){
+  locked=false;const q=order[idx];
+  $('qcount').textContent=`Question ${idx+1} of ${TOTAL}`;
+  $('qnum').textContent='Q'+(idx+1);$('qtext').textContent=q.q;
+  $('score').textContent='Score: '+score;
+  $('bar').style.width=(idx/TOTAL*100)+'%';
+  $('expl').className='expl';$('next').classList.remove('show');
+  $('next').textContent=idx===TOTAL-1?'SEE RESULTS':'NEXT QUESTION';
+  const box=$('opts');box.innerHTML='';
+  /* options are shuffled too, tracking which one is correct */
+  shuffle(q.o.map((t,i)=>({t,c:i===q.a}))).forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt';b.dataset.c=o.c?1:0;
+    b.innerHTML=`<span class="k">${'ABCD'[i]}</span><span>${o.t}</span>`;
+    b.onclick=()=>answer(b);box.appendChild(b);
+  });
+  startTimer();
+}
+
+/* ===== TIMER ===== */
+function startTimer(){
+  clearInterval(tick);left=TIME;drawTimer();
+  tick=setInterval(()=>{left--;drawTimer();if(left<=0){clearInterval(tick);answer(null)}},1000);
+}
+function drawTimer(){
+  $('tsec').textContent=left;
+  $('tp').style.strokeDashoffset=264*(1-left/TIME);
+  $('timer').classList.toggle('low',left<=5);
+}
+
+/* ===== ANSWER (null = time ran out); locked prevents double answers ===== */
+function answer(btn){
+  if(locked)return;locked=true;clearInterval(tick);
+  const q=order[idx];let ok=false;
+  document.querySelectorAll('.opt').forEach(o=>{
+    o.disabled=true;
+    if(o.dataset.c==='1')o.classList.add('right');
+    else if(o===btn)o.classList.add('wrong');
+    else o.classList.add('dim');
+  });
+  if(btn&&btn.dataset.c==='1'){ok=true;score++;$('score').textContent='Score: '+score}
+  const ex=$('expl');
+  ex.textContent=(ok?'Correct! ':btn?'Not quite. ':"Time's up! ")+q.e;
+  ex.className='expl show '+(ok?'good':'bad');
+  $('next').classList.add('show');$('next').focus();
+}
+function next(){idx++;idx<TOTAL?loadQ():finish()}
+
+/* ===== RESULTS ===== */
+function finish(){
+  show('result');$('bar').style.width='100%';
+  const pct=Math.round(score/TOTAL*100);
+  $('fs').textContent=score;$('ft').textContent='out of '+TOTAL;$('fp').textContent=pct+'% correct';
+  const tiers=[
+    [10,"Perfect score!","Cyber Champion","You spotted every trap. The hackers never stood a chance."],
+    [8,"Excellent work!","Firewall Pro","Your instincts are sharp. A couple more lessons and you're unstoppable."],
+    [6,"Good job!","Safe Surfer","You know the basics. Review the explanations to close the gaps."],
+    [0,"Keep learning!","Rookie Defender","Everyone starts here. Play again and see how much you improve."]
+  ];
+  const t=tiers.find(t=>score>=t[0]);
+  $('fh').textContent=t[1];$('fb').textContent=t[2];$('fm').textContent=t[3];
+  const pr=$('pr');pr.style.strokeDashoffset=327;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>pr.style.strokeDashoffset=327*(1-score/TOTAL)));
+  if(score===TOTAL)confetti();
+}
+
+/* ===== CONFETTI (canvas, perfect score only) ===== */
+let raf;const cv=$('confetti'),cx=cv.getContext('2d');
+function clearConfetti(){cancelAnimationFrame(raf);cx.clearRect(0,0,cv.width,cv.height)}
+function confetti(){
+  cv.width=innerWidth;cv.height=innerHeight;
+  const cols=['#6B8FCB','#c2cfea','#2bb8a3','#f0735f','#23395B','#ffd166'];
+  const ps=Array.from({length:160},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.5,w:8+Math.random()*8,h:12+Math.random()*10,vy:2+Math.random()*4,vx:-1.5+Math.random()*3,r:Math.random()*6,vr:-.2+Math.random()*.4,c:cols[Math.random()*cols.length|0]}));
+  (function f(){
+    cx.clearRect(0,0,cv.width,cv.height);let alive=0;
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;if(p.y<cv.height+30)alive++;
+      cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.w/2,-p.h/2,p.w,p.h);cx.restore()});
+    if(alive)raf=requestAnimationFrame(f);else cx.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+/* ===== EVENTS ===== */
+$('start').onclick=begin;$('again').onclick=begin;$('next').onclick=next;
+addEventListener('keydown',e=>{ /* keyboard: A-D answer, Enter/Space next */
+  if(!$('quiz').classList.contains('active'))return;
+  const i='abcd'.indexOf(e.key.toLowerCase());
+  if(i>-1&&!locked){const b=document.querySelectorAll('.opt')[i];b&&answer(b)}
+  else if(e.key==='Enter'&&locked&&e.target.tagName!=='BUTTON')next();
+});
+</script>
+</body>
+</html>
